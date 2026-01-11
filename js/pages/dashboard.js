@@ -156,15 +156,12 @@ const DashboardPage = {
                 ${leadingLead ? `
                     <div class="mt-3 p-3 ${isCritical ? 'bg-gradient-to-r from-orange-50 to-yellow-50 border-2 border-orange-200' : 'bg-blue-50 border border-blue-200'} rounded-lg">
                         <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-2">
-                                <span class="text-lg">${isCritical ? '⭐' : '🔵'}</span>
-                                <div>
-                                    <div class="text-xs ${isCritical ? 'text-orange-600' : 'text-blue-600'} font-medium">
-                                        ${isCritical ? 'THẦU ƯU TIÊN' : 'Thầu dẫn đầu'}
-                                    </div>
-                                    <div class="font-bold ${isCritical ? 'text-orange-900' : 'text-gray-900'}">${leadingSub?.name || 'N/A'}</div>
-                                    <div class="text-xs text-gray-500">${leadingSub?.code || ''}</div>
+                            <div class="flex-1">
+                                <div class="text-xs ${isCritical ? 'text-orange-600' : 'text-blue-600'} font-medium">
+                                    ${isCritical ? 'THẦU ƯU TIÊN' : 'Thầu dẫn đầu'}
                                 </div>
+                                <div class="font-bold ${isCritical ? 'text-orange-900' : 'text-gray-900'}">${leadingSub?.name || 'N/A'}</div>
+                                <div class="text-xs text-gray-500">${leadingSub?.code || ''}</div>
                             </div>
                             <div class="text-right">
                                 <span class="badge ${StageHelper.getStageColor(leadingLead.current_stage)} text-xs">

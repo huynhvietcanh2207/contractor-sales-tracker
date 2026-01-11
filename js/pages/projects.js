@@ -149,32 +149,26 @@ const ProjectsPage = {
 
                 ${project.status === 'won' && winner ? `
                     <div class="p-3 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-lg">
-                        <div class="flex items-center gap-2">
-                            <span class="text-xl">🏆</span>
-                            <div class="flex-1">
-                                <div class="text-xs text-green-600 font-medium">THẦU THẮNG CUỘC</div>
-                                <div class="font-bold text-green-900">${winner.name}</div>
-                                <div class="text-xs text-green-600">${Utils.formatDate(wonLead.won_at)}</div>
-                            </div>
+                        <div class="flex-1">
+                            <div class="text-xs text-green-600 font-medium">THẦU THẮNG CUỘC</div>
+                            <div class="font-bold text-green-900">${winner.name}</div>
+                            <div class="text-xs text-green-600">${Utils.formatDate(wonLead.won_at)}</div>
                         </div>
                     </div>
                 ` : leadingLead ? `
                     <div class="p-3 ${isCritical ? 'bg-gradient-to-r from-orange-50 to-yellow-50 border-2 border-orange-200' : 'bg-blue-50 border border-blue-200'} rounded-lg">
-                        <div class="flex items-center gap-2">
-                            <span class="text-xl">${isCritical ? '⭐' : '🔵'}</span>
-                            <div class="flex-1">
-                                <div class="text-xs ${isCritical ? 'text-orange-600' : 'text-blue-600'} font-medium">
-                                    ${isCritical ? 'THẦU ƯU TIÊN' : 'THẦU DẪN ĐẦU'}
-                                </div>
-                                <div class="font-bold ${isCritical ? 'text-orange-900' : 'text-gray-900'}">${leadingSub?.name || 'N/A'}</div>
-                                <div class="flex items-center gap-2 mt-1">
-                                    <span class="badge ${StageHelper.getStageColor(leadingLead.current_stage)} text-xs">
-                                        Stage ${stageOrder}/6
-                                    </span>
-                                    <span class="text-xs ${isCritical ? 'text-orange-600' : 'text-gray-500'}">
-                                        ${PriorityHelper.getPriorityIcon(leadingLead.priority)} ${PriorityHelper.getPriorityName(leadingLead.priority)}
-                                    </span>
-                                </div>
+                        <div class="flex-1">
+                            <div class="text-xs ${isCritical ? 'text-orange-600' : 'text-blue-600'} font-medium">
+                                ${isCritical ? 'THẦU ƯU TIÊN' : 'THẦU DẪN ĐẦU'}
+                            </div>
+                            <div class="font-bold ${isCritical ? 'text-orange-900' : 'text-gray-900'}">${leadingSub?.name || 'N/A'}</div>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="badge ${StageHelper.getStageColor(leadingLead.current_stage)} text-xs">
+                                    Stage ${stageOrder}/6
+                                </span>
+                                <span class="text-xs ${isCritical ? 'text-orange-600' : 'text-gray-500'}">
+                                    ${PriorityHelper.getPriorityIcon(leadingLead.priority)} ${PriorityHelper.getPriorityName(leadingLead.priority)}
+                                </span>
                             </div>
                         </div>
                     </div>
