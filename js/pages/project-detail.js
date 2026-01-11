@@ -89,7 +89,7 @@ const ProjectDetailPage = {
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                                         </svg>
-                                        Thêm Lead
+                                        Thêm Thầu phụ
                                     </button>
                                 ` : ''}
                             </div>
@@ -352,7 +352,7 @@ const ProjectDetailPage = {
                 ${lead.status === 'active' ? `
                     <div class="mb-4">
                         <div class="text-xs font-medium text-gray-700 mb-3">
-                            📍 Tiến độ hiện tại: <span class="text-blue-600">${StageHelper.getStageName(lead.current_stage)}</span>
+                             Tiến độ hiện tại: <span class="text-blue-600">${StageHelper.getStageName(lead.current_stage)}</span>
                         </div>
                         <div class="relative">
                             <div class="flex items-start justify-between">
@@ -523,7 +523,7 @@ const ProjectDetailPage = {
         }
 
         Modal.open({
-            title: 'Thêm Lead mới',
+            title: 'Thêm Thầu phụ mới',
             size: 'md',
             content: `
                 <form id="add-lead-form">
@@ -564,7 +564,7 @@ const ProjectDetailPage = {
                     </div>
                 </form>
             `,
-            confirmText: 'Thêm Lead',
+            confirmText: 'Thêm Thầu phụ',
             onConfirm: () => {
                 const form = document.getElementById('add-lead-form');
                 const formData = new FormData(form);
@@ -587,7 +587,7 @@ const ProjectDetailPage = {
                     API.createLeadAssignedNotification(parseInt(formData.get('assigned_consultant_id')), lead.id);
                 }
 
-                Toast.success('Thành công', 'Đã thêm Lead mới');
+                Toast.success('Thành công', 'Đã thêm Thầu phụ mới');
                 App.renderContent();
             }
         });
