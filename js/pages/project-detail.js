@@ -181,11 +181,6 @@ const ProjectDetailPage = {
                     <div class="flex-1">
                         <p class="text-sm text-gray-500">Nhà thầu phụ</p>
                         <p class="text-2xl font-bold text-gray-900">${uniqueSubcontractors.length}</p>
-                        <p class="text-xs text-gray-400 mt-1">
-                            <span class="text-green-600">${activeLeads.length} active</span>
-                            ${wonLeads.length > 0 ? ` • <span class="text-blue-600">${wonLeads.length} won</span>` : ''}
-                            ${lostLeads.length > 0 ? ` • <span class="text-gray-400">${lostLeads.length} lost</span>` : ''}
-                        </p>
                     </div>
                 </div>
             </div>
@@ -200,13 +195,6 @@ const ProjectDetailPage = {
                     <div class="flex-1">
                         <p class="text-sm text-gray-500">Sales</p>
                         <p class="text-2xl font-bold text-gray-900">${uniqueSales.length}</p>
-                        <p class="text-xs text-gray-400 mt-1">
-                            ${uniqueSales.map(sId => {
-            const s = API.getUser(sId);
-            return s ? s.name.split(' ').pop() : '';
-        }).filter(Boolean).slice(0, 2).join(', ')}
-                            ${uniqueSales.length > 2 ? ` +${uniqueSales.length - 2}` : ''}
-                        </p>
                     </div>
                 </div>
             </div>
@@ -221,13 +209,6 @@ const ProjectDetailPage = {
                     <div class="flex-1">
                         <p class="text-sm text-gray-500">Tư vấn phụ</p>
                         <p class="text-2xl font-bold text-gray-900">${uniqueConsultants.length}</p>
-                        <p class="text-xs text-gray-400 mt-1">
-                            ${uniqueConsultants.length > 0 ? uniqueConsultants.map(cId => {
-            const c = API.getUser(cId);
-            return c ? c.name.split(' ').pop() : '';
-        }).filter(Boolean).slice(0, 2).join(', ') : 'Chưa giao'}
-                            ${uniqueConsultants.length > 2 ? ` +${uniqueConsultants.length - 2}` : ''}
-                        </p>
                     </div>
                 </div>
             </div>
@@ -243,9 +224,6 @@ const ProjectDetailPage = {
                         <p class="text-sm text-gray-500">Tỷ lệ thắng</p>
                         <p class="text-2xl font-bold text-gray-900">
                             ${allLeads.length > 0 ? Math.round((wonLeads.length / allLeads.length) * 100) : 0}%
-                        </p>
-                        <p class="text-xs text-gray-400 mt-1">
-                            ${wonLeads.length}/${allLeads.length} leads
                         </p>
                     </div>
                 </div>
