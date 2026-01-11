@@ -293,7 +293,7 @@ const ProjectDetailPage = {
                                         ${StageHelper.getStageName(leadingLead.current_stage)}
                                     </span>
                                     <span class="text-sm font-semibold ${isCritical ? 'text-orange-600' : 'text-blue-600'}">
-                                        Stage ${stageOrder}/6
+                                        Giai đoạn ${stageOrder}/6
                                     </span>
                                 </div>
                                 <p class="text-sm text-gray-600 mt-1">
@@ -304,7 +304,6 @@ const ProjectDetailPage = {
                                 <p class="text-xs ${isCritical ? 'text-orange-600' : 'text-blue-600'} mb-1">Phụ trách</p>
                                 <p class="text-sm font-medium text-gray-900">Sales: ${leadingSales?.name || 'N/A'}</p>
                                 <p class="text-sm font-medium text-gray-900">Tư vấn: ${leadingConsultant?.name || 'Chưa giao'}</p>
-                                <p class="text-sm text-gray-600 mt-1">Điểm QH: ${leadingLead.relationship_score || 0}/10</p>
                             </div>
                         </div>
                     </div>
@@ -409,7 +408,7 @@ const ProjectDetailPage = {
                 <div class="flex gap-2 pt-3 border-t border-gray-200">
                     ${lead.status === 'active' && Permissions.canUpdateLeadStage(user, lead) ? `
                         <button onclick="ProjectDetailPage.showChangeStageModal(${lead.id})" class="btn btn-sm btn-secondary flex-1" title="Click để chuyển stage (có thể thêm stage tùy chỉnh)">
-                            🔄 Chuyển Stage
+                             Chuyển giai đoạn
                         </button>
                     ` : ''}
                     ${canSelectWinner ? `
@@ -598,12 +597,12 @@ const ProjectDetailPage = {
         const currentOrder = StageHelper.getStageOrder(lead.current_stage);
 
         Modal.open({
-            title: 'Chuyển Stage',
+            title: 'Chuyển giai đoạn',
             size: 'sm',
             content: `
                 <form id="change-stage-form">
                     <div class="form-group">
-                        <label class="form-label">Stage hiện tại</label>
+                        <label class="form-label">Giai đoạn hiện tại</label>
                         <input type="text" class="form-input" value="${StageHelper.getStageName(lead.current_stage)}" disabled>
                     </div>
                     
@@ -611,14 +610,14 @@ const ProjectDetailPage = {
                         <label class="form-label">Chuyển sang <span class="text-red-500">*</span></label>
                         <select name="new_stage" id="new-stage-select" class="form-input form-select" required>
                             ${StageHelper.stages.filter(s => s.order > currentOrder).map(s =>
-                `<option value="${s.code}">Stage ${s.order}: ${s.name}</option>`
+                `<option value="${s.code}">Giai đoạn ${s.order}: ${s.name}</option>`
             ).join('')}
-                            <option value="__custom__">➕ Thêm Stage Tùy chỉnh...</option>
+                            <option value="__custom__">➡️ Thêm giai đoạn tùy chỉnh...</option>
                         </select>
                     </div>
                     
                     <div id="custom-stage-input" class="form-group" style="display: none;">
-                        <label class="form-label">Tên Stage mới</label>
+                        <label class="form-label">Tên giai đoạn mới</label>
                         <input type="text" id="custom-stage-name" class="form-input" placeholder="Ví dụ: Đàm phán hợp đồng">
                     </div>
                     
@@ -628,7 +627,7 @@ const ProjectDetailPage = {
                     </div>
                 </form>
             `,
-            confirmText: 'Chuyển Stage',
+            confirmText: 'Chuyển giai đoạn',
             onConfirm: () => {
                 const form = document.getElementById('change-stage-form');
                 const formData = new FormData(form);

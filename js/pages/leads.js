@@ -143,7 +143,7 @@ const LeadsPage = {
                         <tr>
                             <th>Dự án</th>
                             <th>Nhà thầu</th>
-                            <th>Stage</th>
+                            <th>Giai đoạn</th>
                             <th>Ưu tiên</th>
                             <th>Tư vấn</th>
                             <th>Cập nhật</th>

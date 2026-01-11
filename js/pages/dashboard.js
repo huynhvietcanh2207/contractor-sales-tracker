@@ -165,7 +165,7 @@ const DashboardPage = {
                             </div>
                             <div class="text-right">
                                 <span class="badge ${StageHelper.getStageColor(leadingLead.current_stage)} text-xs">
-                                    Stage ${stageOrder}/6
+                                    Giai đoạn ${stageOrder}/6
                                 </span>
                                 <div class="text-xs text-gray-500 mt-1">
                                     ${PriorityHelper.getPriorityIcon(leadingLead.priority)} ${PriorityHelper.getPriorityName(leadingLead.priority)}
