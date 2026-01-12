@@ -94,6 +94,7 @@ const ProjectsPage = {
         }
 
         const leadingSub = leadingLead ? API.getSubcontractor(leadingLead.subcontractor_id) : null;
+        const leadingSales = leadingLead ? API.getUser(leadingLead.sales_id) : null;
         const stageOrder = leadingLead ? StageHelper.getStageOrder(leadingLead.current_stage) : 0;
         const isCritical = stageOrder >= 5;
 
@@ -169,6 +170,10 @@ const ProjectsPage = {
                                 <span class="text-xs ${isCritical ? 'text-orange-600' : 'text-gray-500'}">
                                     ${PriorityHelper.getPriorityIcon(leadingLead.priority)} ${PriorityHelper.getPriorityName(leadingLead.priority)}
                                 </span>
+                            </div>
+                            <div class="flex items-center gap-1 mt-2 pt-2 border-t border-${isCritical ? 'orange' : 'blue'}-200">
+                               <span class="text-xs text-gray-500">Sales phụ trách: </span>
+                            <span class="text-xs font-medium text-gray-700">${leadingSales?.name || 'N/A'}</span>
                             </div>
                         </div>
                     </div>

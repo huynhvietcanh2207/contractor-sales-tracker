@@ -264,8 +264,18 @@ const ProjectDetailPage = {
                             </div>
                             <div>
                                 <p class="text-xs ${isCritical ? 'text-orange-600' : 'text-blue-600'} mb-1">Phụ trách</p>
-                                <p class="text-sm font-medium text-gray-900">Sales: ${leadingSales?.name || 'N/A'}</p>
-                                <p class="text-sm font-medium text-gray-900">Tư vấn: ${leadingConsultant?.name || 'Chưa giao'}</p>
+                                <div class="flex items-center gap-1 mb-1">
+                                    <span class="text-sm">👤</span>
+                                    <p class="text-sm font-semibold text-gray-900">${leadingSales?.name || 'N/A'}</p>
+                                </div>
+                                <p class="text-xs text-gray-500">Sales phụ trách</p>
+                                ${leadingConsultant ? `
+                                    <div class="flex items-center gap-1 mt-2">
+                                        <span class="text-sm">👥</span>
+                                        <p class="text-sm font-medium text-gray-700">${leadingConsultant.name}</p>
+                                    </div>
+                                    <p class="text-xs text-gray-500">Tư vấn phụ</p>
+                                ` : ''}
                             </div>
                         </div>
                     </div>

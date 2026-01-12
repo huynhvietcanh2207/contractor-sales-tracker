@@ -254,6 +254,7 @@ const DashboardPage = {
         }
 
         const leadingSub = leadingLead ? API.getSubcontractor(leadingLead.subcontractor_id) : null;
+        const leadingSales = leadingLead ? API.getUser(leadingLead.sales_id) : null;
         const stageOrder = leadingLead ? StageHelper.getStageOrder(leadingLead.current_stage) : 0;
         const isCritical = stageOrder >= 5;
 
@@ -278,7 +279,7 @@ const DashboardPage = {
 
                 ${leadingLead ? `
                     <div class="mt-3 p-3 ${isCritical ? 'bg-gradient-to-r from-orange-50 to-yellow-50 border-2 border-orange-200' : 'bg-blue-50 border border-blue-200'} rounded-lg">
-                        <div class="flex items-center justify-between">
+                        <div class="flex items-center justify-between mb-2">
                             <div class="flex-1">
                                 <div class="text-xs ${isCritical ? 'text-orange-600' : 'text-blue-600'} font-medium">
                                     ${isCritical ? 'THẦU ƯU TIÊN' : 'Thầu dẫn đầu'}
@@ -294,6 +295,10 @@ const DashboardPage = {
                                     ${PriorityHelper.getPriorityIcon(leadingLead.priority)} ${PriorityHelper.getPriorityName(leadingLead.priority)}
                                 </div>
                             </div>
+                        </div>
+                        <div class="flex items-center gap-1 pt-2 border-t border-${isCritical ? 'orange' : 'blue'}-200">
+                             <span class="text-xs text-gray-500">Sales phụ trách: </span>
+                            <span class="text-xs font-medium text-gray-700">${leadingSales?.name || 'N/A'}</span>
                         </div>
                     </div>
                 ` : `
