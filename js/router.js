@@ -20,7 +20,14 @@ const Router = {
     },
 
     handleRoute() {
-        const hash = window.location.hash.slice(2) || ''; // Remove #/
+        let hash = window.location.hash.slice(2) || ''; // Remove #/
+
+        // If no hash, redirect to dashboard
+        if (!hash || hash === '') {
+            window.location.hash = '#/dashboard';
+            return;
+        }
+
         const { route, params } = this.parseRoute(hash);
 
         this.currentRoute = route;

@@ -26,7 +26,7 @@ const RewardsPage = {
                     <!-- Leaderboard -->
                     <div class="lg:col-span-2">
                         <div class="card p-6">
-                            <h2 class="text-lg font-semibold text-gray-900 mb-6">🏆 Bảng xếp hạng ${this.selectedYear}</h2>
+                            <h2 class="text-lg font-semibold text-gray-900 mb-6"> Bảng xếp hạng ${this.selectedYear}</h2>
                             
                             ${leaderboard.length > 0 ? `
                                 <!-- Top 3 -->
@@ -65,7 +65,7 @@ const RewardsPage = {
                     <div class="space-y-6">
                         <!-- Quick Stats -->
                         <div class="card p-6">
-                            <h3 class="font-semibold text-gray-900 mb-4">📊 Thống kê ${this.selectedYear}</h3>
+                            <h3 class="font-semibold text-gray-900 mb-4"> Thống kê ${this.selectedYear}</h3>
                             <div class="space-y-4">
                                 <div class="flex justify-between">
                                     <span class="text-gray-500">Tổng điểm đã phát</span>
@@ -96,7 +96,7 @@ const RewardsPage = {
                 <!-- Transaction History -->
                 <div class="mt-6">
                     <div class="card p-6">
-                        <h2 class="text-lg font-semibold text-gray-900 mb-4">📋 Lịch sử điểm thưởng</h2>
+                        <h2 class="text-lg font-semibold text-gray-900 mb-4"> Lịch sử điểm thưởng</h2>
                         
                         ${transactions.length > 0 ? `
                             <div class="table-container">

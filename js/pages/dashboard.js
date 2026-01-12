@@ -40,56 +40,61 @@ const DashboardPage = {
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
                     <!-- Top Subcontractors Chart -->
                     <div class="card p-6">
-                        <h2 class="text-lg font-semibold text-gray-900 mb-6">🏆 Top Nhà thầu phụ</h2>
-                        <div class="flex items-end justify-around gap-3 h-64 pt-8">
+                        <h2 class="text-lg font-semibold text-gray-900 mb-6"> Top Nhà thầu phụ</h2>
+                        <div class="space-y-4">
                             ${this.renderTopSubcontractors(allLeads).map((item, index) => {
             const maxCount = this.renderTopSubcontractors(allLeads)[0]?.count || 1;
-            const heightPercent = Math.max((item.count / maxCount) * 100, 20); // Min 20%
+            const widthPercent = (item.count / maxCount) * 100;
             const colors = [
-                'from-blue-500 to-blue-600',
-                'from-green-500 to-green-600',
-                'from-purple-500 to-purple-600',
-                'from-orange-500 to-orange-600',
-                'from-pink-500 to-pink-600'
+                'bg-gradient-to-r from-teal-400 to-teal-500',
+                'bg-gradient-to-r from-cyan-400 to-cyan-500',
+                'bg-gradient-to-r from-blue-400 to-blue-500',
+                'bg-gradient-to-r from-indigo-400 to-indigo-500',
+                'bg-gradient-to-r from-purple-400 to-purple-500'
             ];
-            const medals = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣'];
+            const delay = index * 100; // Stagger animation
             return `
-                                    <div class="flex-1 flex flex-col items-center gap-2 max-w-24">
-                                        <div class="text-sm font-bold text-gray-900">${item.count}</div>
-                                        <div class="w-full bg-gradient-to-t ${colors[index % colors.length]} rounded-t-lg transition-all duration-500 hover:opacity-80 relative group shadow-lg" style="height: ${heightPercent}%; min-height: 60px;">
-                                            <div class="absolute -top-8 left-1/2 -translate-x-1/2 text-3xl">${medals[index]}</div>
+                                    <div class="animate-fade-in" style="animation-delay: ${delay}ms">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-sm font-medium text-gray-700">${item.name}</span>
+                                            <span class="text-sm font-semibold text-gray-900">${item.count}</span>
                                         </div>
-                                        <div class="text-xs text-center text-gray-600 font-medium mt-2 line-clamp-2 w-full" title="${item.name}">
-                                            ${item.name.length > 15 ? item.name.substring(0, 15) + '...' : item.name}
+                                        <div class="w-full bg-gray-200 rounded-lg h-8 overflow-hidden">
+                                            <div class="${colors[index % colors.length]} h-full rounded-lg transition-all duration-1000 ease-out flex items-center justify-end pr-3 animate-slide-in-right" style="width: ${widthPercent}%; animation-delay: ${delay}ms">
+                                                <span class="text-xs font-semibold text-white opacity-0 animate-fade-in" style="animation-delay: ${delay + 500}ms">${item.count} deals</span>
+                                            </div>
                                         </div>
                                     </div>
                                 `;
         }).join('')}
                         </div>
+                        <div class="mt-4 text-center text-xs text-gray-500 animate-fade-in" style="animation-delay: 600ms">
+                            Top 5 nhà thầu có nhiều deals nhất
+                        </div>
                     </div>
 
                     <!-- Lead Status Pie Chart (CSS only) -->
                     <div class="card p-6">
-                        <h2 class="text-lg font-semibold text-gray-900 mb-6">🎯 Tình trạng Thầu phụ</h2>
-                        <div class="flex items-center justify-center">
+                        <h2 class="text-lg font-semibold text-gray-900 mb-6"> Tình trạng Thầu phụ</h2>
+                        <div class="flex items-center justify-center animate-scale-in">
                             ${this.renderPieChart(stats)}
                         </div>
                         <div class="mt-6 space-y-2">
-                            <div class="flex items-center justify-between text-sm">
+                            <div class="flex items-center justify-between text-sm animate-fade-in" style="animation-delay: 200ms">
                                 <div class="flex items-center gap-2">
                                     <div class="w-3 h-3 rounded-full bg-blue-500"></div>
                                     <span class="text-gray-700">Đang hoạt động</span>
                                 </div>
                                 <span class="font-semibold text-gray-900">${stats.activeLeads}</span>
                             </div>
-                            <div class="flex items-center justify-between text-sm">
+                            <div class="flex items-center justify-between text-sm animate-fade-in" style="animation-delay: 300ms">
                                 <div class="flex items-center gap-2">
                                     <div class="w-3 h-3 rounded-full bg-green-500"></div>
                                     <span class="text-gray-700">Đã thắng</span>
                                 </div>
                                 <span class="font-semibold text-gray-900">${stats.wonDeals}</span>
                             </div>
-                            <div class="flex items-center justify-between text-sm">
+                            <div class="flex items-center justify-between text-sm animate-fade-in" style="animation-delay: 400ms">
                                 <div class="flex items-center gap-2">
                                     <div class="w-3 h-3 rounded-full bg-gray-400"></div>
                                     <span class="text-gray-700">Đã thua</span>
@@ -104,7 +109,7 @@ const DashboardPage = {
                     <!-- Project Heat Map - Grid Layout -->
                     <div class="card p-6">
                         <div class="flex items-center justify-between mb-6">
-                            <h2 class="text-lg font-semibold text-gray-900">🗺️ Tình hình Dự án</h2>
+                            <h2 class="text-lg font-semibold text-gray-900"> Tình hình Dự án</h2>
                             <a href="#/projects" class="text-sm text-blue-600 hover:text-blue-700">Xem tất cả →</a>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -121,7 +126,7 @@ const DashboardPage = {
                 <!-- Recent Activity -->
                 <div class="mt-6">
                     <div class="card p-6">
-                        <h2 class="text-lg font-semibold text-gray-900 mb-4">⏰ Hoạt động gần đây</h2>
+                        <h2 class="text-lg font-semibold text-gray-900 mb-4"> Hoạt động gần đây</h2>
                         <div class="space-y-4">
                             ${this.renderRecentActivity()}
                         </div>
