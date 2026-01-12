@@ -68,7 +68,7 @@ const ProjectDetailPage = {
                 </div>
 
                 <!-- Summary Stats -->
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                     ${this.renderProjectStats(project, filteredLeads, leads)}
                 </div>
 
@@ -209,22 +209,6 @@ const ProjectDetailPage = {
                     <div class="flex-1">
                         <p class="text-sm text-gray-500">Tư vấn phụ</p>
                         <p class="text-2xl font-bold text-gray-900">${uniqueConsultants.length}</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card p-4">
-                <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 rounded-lg bg-orange-100 flex items-center justify-center">
-                        <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                        </svg>
-                    </div>
-                    <div class="flex-1">
-                        <p class="text-sm text-gray-500">Tỷ lệ thắng</p>
-                        <p class="text-2xl font-bold text-gray-900">
-                            ${allLeads.length > 0 ? Math.round((wonLeads.length / allLeads.length) * 100) : 0}%
-                        </p>
                     </div>
                 </div>
             </div>

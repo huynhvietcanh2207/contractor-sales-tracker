@@ -18,7 +18,7 @@ const DashboardPage = {
                 </div>
 
                 <!-- Stats Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                     ${this.renderStatCard('Dự án Active', stats.activeProjects, 'bg-gradient-to-br from-blue-500 to-blue-600', `
                         <svg class="w-8 h-8 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
@@ -34,11 +34,70 @@ const DashboardPage = {
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     `)}
-                    ${this.renderStatCard('Win Rate', stats.winRate + '%', 'bg-gradient-to-br from-purple-500 to-purple-600', `
-                        <svg class="w-8 h-8 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                        </svg>
-                    `)}
+                </div>
+
+                <!-- Charts Section -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <!-- Top Subcontractors Chart -->
+                    <div class="card p-6">
+                        <h2 class="text-lg font-semibold text-gray-900 mb-6">🏆 Top Nhà thầu phụ</h2>
+                        <div class="flex items-end justify-around gap-3 h-64 pt-8">
+                            ${this.renderTopSubcontractors(allLeads).map((item, index) => {
+            const maxCount = this.renderTopSubcontractors(allLeads)[0]?.count || 1;
+            const heightPercent = Math.max((item.count / maxCount) * 100, 20); // Min 20%
+            const colors = [
+                'from-blue-500 to-blue-600',
+                'from-green-500 to-green-600',
+                'from-purple-500 to-purple-600',
+                'from-orange-500 to-orange-600',
+                'from-pink-500 to-pink-600'
+            ];
+            const medals = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣'];
+            return `
+                                    <div class="flex-1 flex flex-col items-center gap-2 max-w-24">
+                                        <div class="text-sm font-bold text-gray-900">${item.count}</div>
+                                        <div class="w-full bg-gradient-to-t ${colors[index % colors.length]} rounded-t-lg transition-all duration-500 hover:opacity-80 relative group shadow-lg" style="height: ${heightPercent}%; min-height: 60px;">
+                                            <div class="absolute -top-8 left-1/2 -translate-x-1/2 text-3xl">${medals[index]}</div>
+                                        </div>
+                                        <div class="text-xs text-center text-gray-600 font-medium mt-2 line-clamp-2 w-full" title="${item.name}">
+                                            ${item.name.length > 15 ? item.name.substring(0, 15) + '...' : item.name}
+                                        </div>
+                                    </div>
+                                `;
+        }).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Lead Status Pie Chart (CSS only) -->
+                    <div class="card p-6">
+                        <h2 class="text-lg font-semibold text-gray-900 mb-6">🎯 Tình trạng Thầu phụ</h2>
+                        <div class="flex items-center justify-center">
+                            ${this.renderPieChart(stats)}
+                        </div>
+                        <div class="mt-6 space-y-2">
+                            <div class="flex items-center justify-between text-sm">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-3 h-3 rounded-full bg-blue-500"></div>
+                                    <span class="text-gray-700">Đang hoạt động</span>
+                                </div>
+                                <span class="font-semibold text-gray-900">${stats.activeLeads}</span>
+                            </div>
+                            <div class="flex items-center justify-between text-sm">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                    <span class="text-gray-700">Đã thắng</span>
+                                </div>
+                                <span class="font-semibold text-gray-900">${stats.wonDeals}</span>
+                            </div>
+                            <div class="flex items-center justify-between text-sm">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-3 h-3 rounded-full bg-gray-400"></div>
+                                    <span class="text-gray-700">Đã thua</span>
+                                </div>
+                                <span class="font-semibold text-gray-900">${stats.lostDeals || 0}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-1 gap-6">
@@ -83,6 +142,7 @@ const DashboardPage = {
 
         const activeLeads = filteredLeads.filter(l => l.status === 'active');
         const wonLeads = filteredLeads.filter(l => l.status === 'won');
+        const lostLeads = filteredLeads.filter(l => l.status === 'lost');
         const closedLeads = filteredLeads.filter(l => l.status !== 'active');
         const winRate = closedLeads.length > 0 ? Math.round((wonLeads.length / closedLeads.length) * 100) : 0;
 
@@ -95,6 +155,7 @@ const DashboardPage = {
             activeProjects: filteredProjects.filter(p => p.status === 'active').length,
             activeLeads: activeLeads.length,
             wonDeals: wonLeads.length,
+            lostDeals: lostLeads.length,
             winRate: winRate,
             byStage: byStage
         };
@@ -112,6 +173,63 @@ const DashboardPage = {
                 </div>
             </div>
         `;
+    },
+
+    renderPieChart(stats) {
+        const total = stats.activeLeads + stats.wonDeals + stats.lostDeals;
+        if (total === 0) {
+            return '<div class="text-gray-400 text-sm">Chưa có dữ liệu</div>';
+        }
+
+        const activePercent = (stats.activeLeads / total) * 100;
+        const wonPercent = (stats.wonDeals / total) * 100;
+        const lostPercent = (stats.lostDeals / total) * 100;
+
+        // Create donut chart with conic-gradient
+        return `
+            <div class="relative w-48 h-48">
+                <div class="w-full h-full rounded-full" style="background: conic-gradient(
+                    from 0deg,
+                    #3b82f6 0% ${activePercent}%,
+                    #10b981 ${activePercent}% ${activePercent + wonPercent}%,
+                    #9ca3af ${activePercent + wonPercent}% 100%
+                );"></div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="w-28 h-28 bg-white rounded-full flex items-center justify-center">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-gray-900">${total}</div>
+                            <div class="text-xs text-gray-500">Tổng số</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    },
+
+    renderTopSubcontractors(allLeads) {
+        // Đếm số deals của mỗi nhà thầu
+        const subcontractorCounts = {};
+        allLeads.forEach(lead => {
+            if (!subcontractorCounts[lead.subcontractor_id]) {
+                subcontractorCounts[lead.subcontractor_id] = 0;
+            }
+            subcontractorCounts[lead.subcontractor_id]++;
+        });
+
+        // Chuyển thành array và sort
+        const topSubs = Object.entries(subcontractorCounts)
+            .map(([subId, count]) => {
+                const sub = API.getSubcontractor(parseInt(subId));
+                return {
+                    id: parseInt(subId),
+                    name: sub?.name || 'N/A',
+                    count: count
+                };
+            })
+            .sort((a, b) => b.count - a.count)
+            .slice(0, 5); // Top 5
+
+        return topSubs.length > 0 ? topSubs : [{ name: 'Chưa có dữ liệu', count: 0 }];
     },
 
     renderProjectDetailCard(project, allLeads) {
