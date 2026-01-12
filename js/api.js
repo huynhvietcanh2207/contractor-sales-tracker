@@ -287,12 +287,19 @@ const API = {
         });
     },
 
-    changeLeadStage(leadId, newStage, userId, notes = '') {
+    changeLeadStage(leadId, newStage, userId, notes = '', meetingInfo = '') {
         const lead = this.getLead(leadId);
         if (!lead) return { success: false, message: 'Lead không tồn tại' };
 
         const oldStage = lead.current_stage;
-        this.updateLead(leadId, { current_stage: newStage });
+        const updateData = { current_stage: newStage };
+
+        // Lưu meeting_info nếu có
+        if (meetingInfo) {
+            updateData.meeting_info = meetingInfo;
+        }
+
+        this.updateLead(leadId, updateData);
         this.addLeadHistory(leadId, oldStage, newStage, userId, notes);
 
         // Create notification

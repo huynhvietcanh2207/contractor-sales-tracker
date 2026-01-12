@@ -289,7 +289,7 @@ const DashboardPage = {
                             </div>
                             <div class="text-right">
                                 <span class="badge ${StageHelper.getStageColor(leadingLead.current_stage)} text-xs">
-                                    Giai đoạn ${stageOrder}/6
+                                    Giai đoạn: ${StageHelper.getStageName(leadingLead.current_stage)}
                                 </span>
                                 <div class="text-xs text-gray-500 mt-1">
                                     ${PriorityHelper.getPriorityIcon(leadingLead.priority)} ${PriorityHelper.getPriorityName(leadingLead.priority)}
@@ -300,6 +300,12 @@ const DashboardPage = {
                              <span class="text-xs text-gray-500">Sales phụ trách: </span>
                             <span class="text-xs font-medium text-gray-700">${leadingSales?.name || 'N/A'}</span>
                         </div>
+                        ${leadingLead.meeting_info ? `
+                            <div class="flex items-start gap-1 pt-1">
+                                <span class="text-xs"></span>
+                                <span class="text-xs text-gray-600 italic">${leadingLead.meeting_info}</span>
+                            </div>
+                        ` : ''}
                     </div>
                 ` : `
                     <div class="mt-3 p-3 bg-gray-50 rounded-lg text-center">

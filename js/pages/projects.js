@@ -165,7 +165,7 @@ const ProjectsPage = {
                             <div class="font-bold ${isCritical ? 'text-orange-900' : 'text-gray-900'}">${leadingSub?.name || 'N/A'}</div>
                             <div class="flex items-center gap-2 mt-1">
                                 <span class="badge ${StageHelper.getStageColor(leadingLead.current_stage)} text-xs">
-                                    Giai đoạn ${stageOrder}/6
+                                    Giai đoạn: ${StageHelper.getStageName(leadingLead.current_stage)}
                                 </span>
                                 <span class="text-xs ${isCritical ? 'text-orange-600' : 'text-gray-500'}">
                                     ${PriorityHelper.getPriorityIcon(leadingLead.priority)} ${PriorityHelper.getPriorityName(leadingLead.priority)}
@@ -175,6 +175,11 @@ const ProjectsPage = {
                                <span class="text-xs text-gray-500">Sales phụ trách: </span>
                             <span class="text-xs font-medium text-gray-700">${leadingSales?.name || 'N/A'}</span>
                             </div>
+                            ${leadingLead.meeting_info ? `
+                                <div class="flex items-start gap-1 pt-1">
+                                    <span class="text-xs text-gray-600 italic">${leadingLead.meeting_info}</span>
+                                </div>
+                            ` : ''}
                         </div>
                     </div>
                 ` : `

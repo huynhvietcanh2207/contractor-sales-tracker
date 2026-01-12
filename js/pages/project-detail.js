@@ -255,7 +255,7 @@ const ProjectDetailPage = {
                                         ${StageHelper.getStageName(leadingLead.current_stage)}
                                     </span>
                                     <span class="text-sm font-semibold ${isCritical ? 'text-orange-600' : 'text-blue-600'}">
-                                        Giai đoạn ${stageOrder}/6
+                                        Giai đoạn: ${StageHelper.getStageName(leadingLead.current_stage)}
                                     </span>
                                 </div>
                                 <p class="text-sm text-gray-600 mt-1">
@@ -594,6 +594,12 @@ const ProjectDetailPage = {
                     </div>
                     
                     <div class="form-group">
+                        <label class="form-label"> Thông tin gặp gỡ</label>
+                        <input type="text" name="meeting_info" class="form-input" placeholder="VD: Gặp Giám đốc lần 3, Gặp CDT lần 2">
+                        <p class="text-xs text-gray-500 mt-1">Ghi lại ai đã gặp, lần thứ mấy (Giám đốc, CDT, Quản lý, Nhân viên...)</p>
+                    </div>
+                    
+                    <div class="form-group">
                         <label class="form-label">Ghi chú</label>
                         <textarea name="notes" class="form-input form-textarea" placeholder="Ghi chú về việc chuyển stage..."></textarea>
                     </div>
@@ -622,10 +628,10 @@ const ProjectDetailPage = {
                         color: 'badge-purple'
                     });
 
-                    API.changeLeadStage(leadId, newCode, Auth.getUser().id, formData.get('notes'));
+                    API.changeLeadStage(leadId, newCode, Auth.getUser().id, formData.get('notes'), formData.get('meeting_info'));
                     Toast.success('Thành công', `Đã thêm stage mới "${customName}" và cập nhật lead`);
                 } else {
-                    API.changeLeadStage(leadId, newStage, Auth.getUser().id, formData.get('notes'));
+                    API.changeLeadStage(leadId, newStage, Auth.getUser().id, formData.get('notes'), formData.get('meeting_info'));
                     Toast.success('Thành công', 'Đã cập nhật stage');
                 }
 
