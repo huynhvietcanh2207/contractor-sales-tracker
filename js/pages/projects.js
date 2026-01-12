@@ -153,7 +153,19 @@ const ProjectsPage = {
                         <div class="flex-1">
                             <div class="text-xs text-green-600 font-medium">THẦU THẮNG CUỘC</div>
                             <div class="font-bold text-green-900">${winner.name}</div>
-                            <div class="text-xs text-green-600">${Utils.formatDate(wonLead.won_at)}</div>
+                            <div class="text-xs text-green-600 mb-2">${Utils.formatDate(wonLead.won_at)}</div>
+                            <div class="pt-2 border-t border-green-200 space-y-1">
+                                <div class="flex items-center gap-1">
+                                    <span class="text-xs text-green-600">Sales phụ trách:</span>
+                                    <span class="text-xs font-medium text-green-800">${API.getUser(wonLead.sales_id)?.name || 'N/A'}</span>
+                                </div>
+                                ${wonLead.assigned_consultant_id ? `
+                                    <div class="flex items-center gap-1">
+                                        <span class="text-xs text-green-600">Tư vấn:</span>
+                                        <span class="text-xs font-medium text-green-800">${API.getUser(wonLead.assigned_consultant_id)?.name || 'N/A'}</span>
+                                    </div>
+                                ` : ''}
+                            </div>
                         </div>
                     </div>
                 ` : leadingLead ? `

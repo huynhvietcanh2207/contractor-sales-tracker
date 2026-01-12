@@ -595,8 +595,8 @@ const ProjectDetailPage = {
                     
                     <div class="form-group">
                         <label class="form-label"> Thông tin gặp gỡ</label>
-                        <input type="text" name="meeting_info" class="form-input" placeholder="VD: Gặp Giám đốc lần 3, Gặp CDT lần 2">
-                        <p class="text-xs text-gray-500 mt-1">Ghi lại ai đã gặp, lần thứ mấy (Giám đốc, CDT, Quản lý, Nhân viên...)</p>
+                        <input type="text" name="meeting_info" class="form-input" placeholder="VD: Gặp Ông Nguyễn Văn A (GĐ) lần 3, Gặp Bà Trần B (Đại diện CDT) lần 2">
+                        <p class="text-xs text-gray-500 mt-1">Ghi rõ tên người gặp, chức vụ, số lần gặp (CDT = Chủ đầu tư, cần ghi tên đại diện cụ thể)</p>
                     </div>
                     
                     <div class="form-group">
