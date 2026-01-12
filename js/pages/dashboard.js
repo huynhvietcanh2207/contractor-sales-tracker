@@ -296,9 +296,17 @@ const DashboardPage = {
                                 </div>
                             </div>
                         </div>
-                        <div class="flex items-center gap-1 pt-2 border-t border-${isCritical ? 'orange' : 'blue'}-200">
-                             <span class="text-xs text-gray-500">Sales phụ trách: </span>
-                            <span class="text-xs font-medium text-gray-700">${leadingSales?.name || 'N/A'}</span>
+                        <div class="pt-2 border-t border-${isCritical ? 'orange' : 'blue'}-200 space-y-1">
+                            <div class="flex items-center gap-1">
+                                <span class="text-xs text-gray-500">Sales phụ trách:</span>
+                                <span class="text-xs font-medium text-gray-700">${leadingSales?.name || 'N/A'}</span>
+                            </div>
+                            ${leadingLead.assigned_consultant_id ? `
+                                <div class="flex items-center gap-1">
+                                    <span class="text-xs text-gray-500">Tư vấn:</span>
+                                    <span class="text-xs font-medium text-gray-700">${API.getUser(leadingLead.assigned_consultant_id)?.name || 'N/A'}</span>
+                                </div>
+                            ` : ''}
                         </div>
                         ${leadingLead.meeting_info ? `
                             <div class="flex items-start gap-1 pt-1">
