@@ -89,8 +89,19 @@ const SEED_DATA = {
     ],
 };
 
+// Database version - increment this to force reset
+const DB_VERSION = '2.0'; // Updated: Added meeting_info field
+
 // Initialize database with seed data
 function initializeDatabase() {
+    const currentVersion = localStorage.getItem('db_version');
+
+    // Force reset if version mismatch or not initialized
+    if (currentVersion !== DB_VERSION) {
+        console.log(`Database version mismatch (${currentVersion} -> ${DB_VERSION}). Resetting...`);
+        localStorage.clear();
+    }
+
     if (!localStorage.getItem('db_initialized')) {
         localStorage.setItem('subcontractors', JSON.stringify(SEED_DATA.subcontractors));
         localStorage.setItem('users', JSON.stringify(SEED_DATA.users));
@@ -100,7 +111,8 @@ function initializeDatabase() {
         localStorage.setItem('reward_transactions', JSON.stringify(SEED_DATA.reward_transactions));
         localStorage.setItem('notifications', JSON.stringify(SEED_DATA.notifications));
         localStorage.setItem('db_initialized', 'true');
-        console.log('Database initialized with seed data');
+        localStorage.setItem('db_version', DB_VERSION);
+        console.log('Database initialized with seed data v' + DB_VERSION);
     }
 }
 
