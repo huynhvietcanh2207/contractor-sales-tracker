@@ -1,5 +1,6 @@
 // Dashboard Page
 const DashboardPage = {
+    timelineFilter: 'month', // week, month, year
     render() {
         const user = Auth.getUser();
         const stats = this.getStats();
@@ -73,35 +74,17 @@ const DashboardPage = {
                         </div>
                     </div>
 
-                    <!-- Lead Status Pie Chart (CSS only) -->
+                    <!-- Projects Timeline Chart -->
                     <div class="card p-6">
-                        <h2 class="text-lg font-semibold text-gray-900 mb-6"> Tình trạng Thầu phụ</h2>
-                        <div class="flex items-center justify-center animate-scale-in">
-                            ${this.renderPieChart(stats)}
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="text-lg font-semibold text-gray-900">Thống kê Dự án</h2>
+                            <select id="timeline-filter" class="form-input form-select text-xs py-1 px-2 w-24" onchange="DashboardPage.setTimelineFilter(this.value)">
+                                <option value="week" ${this.timelineFilter === 'week' ? 'selected' : ''}>Tuần</option>
+                                <option value="month" ${this.timelineFilter === 'month' ? 'selected' : ''}>Tháng</option>
+                                <option value="year" ${this.timelineFilter === 'year' ? 'selected' : ''}>Năm</option>
+                            </select>
                         </div>
-                        <div class="mt-6 space-y-2">
-                            <div class="flex items-center justify-between text-sm animate-fade-in" style="animation-delay: 200ms">
-                                <div class="flex items-center gap-2">
-                                    <div class="w-3 h-3 rounded-full bg-blue-500"></div>
-                                    <span class="text-gray-700">Đang hoạt động</span>
-                                </div>
-                                <span class="font-semibold text-gray-900">${stats.activeLeads}</span>
-                            </div>
-                            <div class="flex items-center justify-between text-sm animate-fade-in" style="animation-delay: 300ms">
-                                <div class="flex items-center gap-2">
-                                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                                    <span class="text-gray-700">Đã thắng</span>
-                                </div>
-                                <span class="font-semibold text-gray-900">${stats.wonDeals}</span>
-                            </div>
-                            <div class="flex items-center justify-between text-sm animate-fade-in" style="animation-delay: 400ms">
-                                <div class="flex items-center gap-2">
-                                    <div class="w-3 h-3 rounded-full bg-gray-400"></div>
-                                    <span class="text-gray-700">Đã thua</span>
-                                </div>
-                                <span class="font-semibold text-gray-900">${stats.lostDeals || 0}</span>
-                            </div>
-                        </div>
+                        ${this.renderTimelineChart()}
                     </div>
                 </div>
 
@@ -415,5 +398,120 @@ const DashboardPage = {
                 </div>
             `;
         }).join('');
+    },
+
+    renderTimelineChart() {
+        const projects = API.getProjects();
+        const now = new Date();
+        const data = this.getTimelineData(projects, this.timelineFilter);
+
+        if (data.length === 0) {
+            return '<div class="text-center py-8 text-gray-500"><p>Chưa có dữ liệu</p></div>';
+        }
+
+        const maxCount = Math.max(...data.map(d => d.count), 1);
+
+        return `
+            <div class="flex items-end justify-between gap-1 h-48 px-1">
+                ${data.map((item, index) => {
+            const heightPercent = (item.count / maxCount) * 100;
+            const delay = index * 50;
+            return `
+                        <div class="flex-1 flex flex-col items-center animate-fade-in" style="animation-delay: ${delay}ms">
+                            <div class="relative flex items-end justify-center" style="height: 160px; width: 85%;">
+                                <div class="absolute bottom-0 w-full bg-gradient-to-t from-blue-500 to-blue-400 rounded-t-lg transition-all duration-1000 ease-out flex flex-col items-center justify-start pt-2" style="height: ${heightPercent}%; animation-delay: ${delay}ms; min-height: ${item.count > 0 ? '20px' : '0'};">
+                                    ${item.count > 0 ? `<span class="text-xs font-semibold text-white opacity-0 animate-fade-in" style="animation-delay: ${delay + 500}ms">${item.count}</span>` : ''}
+                                </div>
+                            </div>
+                            <div class="text-[10px] text-gray-600 mt-1 text-center font-medium truncate w-full" title="${item.label}">
+                                ${item.label}
+                            </div>
+                        </div>
+                    `;
+        }).join('')}
+            </div>
+            <div class="mt-4 text-center text-xs text-gray-500 animate-fade-in" style="animation-delay: 600ms">
+                Thống kê theo ${this.timelineFilter === 'week' ? 'tuần' : this.timelineFilter === 'month' ? 'tháng' : 'năm'}
+            </div>
+        `;
+    },
+
+    getTimelineData(projects, filter) {
+        const now = new Date();
+        const data = [];
+
+        if (filter === 'week') {
+            // Lấy 8 tuần gần nhất
+            for (let i = 7; i >= 0; i--) {
+                const weekStart = new Date(now);
+                weekStart.setDate(now.getDate() - (i * 7) - now.getDay());
+                weekStart.setHours(0, 0, 0, 0);
+
+                const weekEnd = new Date(weekStart);
+                weekEnd.setDate(weekStart.getDate() + 6);
+                weekEnd.setHours(23, 59, 59, 999);
+
+                const count = projects.filter(p => {
+                    const createdAt = new Date(p.created_at);
+                    return createdAt >= weekStart && createdAt <= weekEnd;
+                }).length;
+
+                const weekNumber = this.getWeekNumber(weekStart);
+                data.push({
+                    label: `Tuần ${weekNumber}`,
+                    count: count
+                });
+            }
+        } else if (filter === 'month') {
+            // Lấy 10 tháng gần nhất
+            for (let i = 9; i >= 0; i--) {
+                const monthDate = new Date(now.getFullYear(), now.getMonth() - i, 1);
+                const monthStart = new Date(monthDate.getFullYear(), monthDate.getMonth(), 1);
+                const monthEnd = new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 0, 23, 59, 59, 999);
+
+                const count = projects.filter(p => {
+                    const createdAt = new Date(p.created_at);
+                    return createdAt >= monthStart && createdAt <= monthEnd;
+                }).length;
+
+                data.push({
+                    label: `Tháng ${monthDate.getMonth() + 1}/${monthDate.getFullYear()}`,
+                    count: count
+                });
+            }
+        } else if (filter === 'year') {
+            // Lấy 5 năm gần nhất
+            const currentYear = now.getFullYear();
+            for (let i = 4; i >= 0; i--) {
+                const year = currentYear - i;
+                const yearStart = new Date(year, 0, 1);
+                const yearEnd = new Date(year, 11, 31, 23, 59, 59, 999);
+
+                const count = projects.filter(p => {
+                    const createdAt = new Date(p.created_at);
+                    return createdAt >= yearStart && createdAt <= yearEnd;
+                }).length;
+
+                data.push({
+                    label: `Năm ${year}`,
+                    count: count
+                });
+            }
+        }
+
+        return data;
+    },
+
+    getWeekNumber(date) {
+        const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+        const dayNum = d.getUTCDay() || 7;
+        d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+        const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+        return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+    },
+
+    setTimelineFilter(filter) {
+        this.timelineFilter = filter;
+        App.renderContent();
     }
 };

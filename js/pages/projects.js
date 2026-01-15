@@ -1,12 +1,16 @@
 // Projects Page
 const ProjectsPage = {
-    filters: { status: '', search: '' },
+    filters: { status: '', search: '', dateFrom: '', dateTo: '' },
+    showDateFilter: false,
 
     render() {
         const user = Auth.getUser();
         const allProjects = API.getProjects(this.filters);
         const allLeads = API.getLeads();
-        const projects = Permissions.filterProjectsForUser(allProjects, allLeads, user);
+        let projects = Permissions.filterProjectsForUser(allProjects, allLeads, user);
+
+        // Filter by date range
+        projects = this.filterByDateRange(projects);
 
         return `
             ${Header.render('Dự án', [{ label: 'Dự án' }])}
@@ -30,21 +34,58 @@ const ProjectsPage = {
 
                 <!-- Filters -->
                 <div class="card p-4 mb-6">
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <div class="flex-1">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="lg:col-span-2">
                             <input type="text" 
                                    placeholder="Tìm kiếm theo tên hoặc mã dự án..." 
                                    class="form-input"
                                    value="${this.filters.search}"
                                    oninput="ProjectsPage.onSearch(this.value)">
                         </div>
-                        <select class="form-input form-select w-full sm:w-48" onchange="ProjectsPage.onFilterStatus(this.value)">
+                        <select class="form-input form-select" onchange="ProjectsPage.onFilterStatus(this.value)">
                             <option value="">Tất cả trạng thái</option>
                             <option value="active" ${this.filters.status === 'active' ? 'selected' : ''}>🟢 Đang hoạt động</option>
                             <option value="won" ${this.filters.status === 'won' ? 'selected' : ''}>🏆 Đã chốt</option>
                             <option value="cancelled" ${this.filters.status === 'cancelled' ? 'selected' : ''}>🔴 Đã hủy</option>
                         </select>
+                        <button onclick="ProjectsPage.toggleDateFilter()" class="btn btn-secondary flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            Lọc theo ngày
+                        </button>
                     </div>
+                    ${this.showDateFilter ? `
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 pt-4 border-t border-gray-200">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Từ ngày</label>
+                                <input type="date" 
+                                       class="form-input" 
+                                       value="${this.filters.dateFrom}"
+                                       onchange="ProjectsPage.onDateFromChange(this.value)">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Đến ngày</label>
+                                <input type="date" 
+                                       class="form-input" 
+                                       value="${this.filters.dateTo}"
+                                       onchange="ProjectsPage.onDateToChange(this.value)">
+                            </div>
+                        </div>
+                        ${this.filters.dateFrom || this.filters.dateTo ? `
+                            <div class="mt-3 flex items-center gap-2">
+                                <span class="text-sm text-gray-600">
+                                    ${this.filters.dateFrom && this.filters.dateTo
+                        ? `Từ ${Utils.formatDate(this.filters.dateFrom)} đến ${Utils.formatDate(this.filters.dateTo)}`
+                        : this.filters.dateFrom
+                            ? `Từ ${Utils.formatDate(this.filters.dateFrom)}`
+                            : `Đến ${Utils.formatDate(this.filters.dateTo)}`
+                    }
+                                </span>
+                                <button onclick="ProjectsPage.clearDateFilter()" class="text-sm text-red-600 hover:text-red-700">Xóa lọc</button>
+                            </div>
+                        ` : ''}
+                    ` : ''}
                 </div>
 
                 <!-- Projects Grid -->
@@ -284,5 +325,50 @@ const ProjectsPage = {
                 App.renderContent();
             }
         });
+    },
+
+    toggleDateFilter() {
+        this.showDateFilter = !this.showDateFilter;
+        App.renderContent();
+    },
+
+    onDateFromChange(value) {
+        this.filters.dateFrom = value;
+        App.renderContent();
+    },
+
+    onDateToChange(value) {
+        this.filters.dateTo = value;
+        App.renderContent();
+    },
+
+    clearDateFilter() {
+        this.filters.dateFrom = '';
+        this.filters.dateTo = '';
+        App.renderContent();
+    },
+
+    filterByDateRange(projects) {
+        let filtered = projects;
+
+        if (this.filters.dateFrom) {
+            const fromDate = new Date(this.filters.dateFrom);
+            fromDate.setHours(0, 0, 0, 0);
+            filtered = filtered.filter(p => {
+                const createdAt = new Date(p.created_at);
+                return createdAt >= fromDate;
+            });
+        }
+
+        if (this.filters.dateTo) {
+            const toDate = new Date(this.filters.dateTo);
+            toDate.setHours(23, 59, 59, 999);
+            filtered = filtered.filter(p => {
+                const createdAt = new Date(p.created_at);
+                return createdAt <= toDate;
+            });
+        }
+
+        return filtered;
     }
 };
