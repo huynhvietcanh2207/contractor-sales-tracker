@@ -22,12 +22,119 @@ const SEED_DATA = {
 
     // Dự án
     projects: [
-        { id: 1, code: 'DA-2026-001', name: 'Chung cư cao cấp Sunrise Tower', description: 'Dự án chung cư 30 tầng tại Quận 2', estimated_value: 850000000, product_notes: 'Cần 200 bộ cửa nhôm cao cấp, 150 bộ cửa kính cường lực. Liên hệ nhãn hàng Eurowindow.', start_date: '2026-01-05', expected_close_date: '2026-02-28', status: 'active', winner_lead_id: null, created_by: 1, created_at: '2026-01-05T08:00:00Z', updated_at: '2026-01-05T08:00:00Z' },
-        { id: 2, code: 'DA-2026-002', name: 'Biệt thự Phú Mỹ Hưng', description: 'Khu biệt thự liền kề 15 căn', estimated_value: 1200000000, product_notes: 'Nội thất cao cấp, ưu tiên gỗ tự nhiên. Đã liên hệ nhà cung cấp ABC.', start_date: '2026-01-08', expected_close_date: '2026-03-15', status: 'active', winner_lead_id: null, created_by: 1, created_at: '2026-01-08T09:00:00Z', updated_at: '2026-01-08T09:00:00Z' },
-        { id: 3, code: 'DA-2025-015', name: 'Trung tâm thương mại Galaxy', description: 'TTTM 5 tầng với diện tích 20,000m2', estimated_value: 2500000000, product_notes: 'Dự án đã hoàn thành. Thầu 3 thắng cuộc.', start_date: '2025-08-01', expected_close_date: '2025-12-31', status: 'won', winner_lead_id: 9, created_by: 1, created_at: '2025-08-01T08:00:00Z', updated_at: '2025-12-20T10:00:00Z' },
-        { id: 4, code: 'DA-2026-003', name: 'Văn phòng TechPark Office', description: 'Tòa nhà văn phòng hạng A 25 tầng', estimated_value: 1800000000, product_notes: 'Cần hệ thống vách kính văn phòng, trần thả. Đang chờ báo giá.', start_date: '2026-01-10', expected_close_date: '2026-04-30', status: 'active', winner_lead_id: null, created_by: 1, created_at: '2026-01-10T08:00:00Z', updated_at: '2026-01-10T08:00:00Z' },
-        { id: 5, code: 'DA-2026-004', name: 'Resort Cam Ranh Bay', description: 'Khu nghỉ dưỡng 5 sao 100 phòng', estimated_value: 3500000000, product_notes: 'Thiết kế phong cách nhiệt đới. Cần nội thất gỗ và mây tre.', start_date: '2026-01-12', expected_close_date: '2026-06-30', status: 'active', winner_lead_id: null, created_by: 1, created_at: '2026-01-12T08:00:00Z', updated_at: '2026-01-12T08:00:00Z' },
-        { id: 6, code: 'DA-2025-020', name: 'Bệnh viện Đa khoa Quốc tế', description: 'Bệnh viện 500 giường', estimated_value: 5000000000, product_notes: 'Dự án bị hủy do thay đổi quy hoạch.', start_date: '2025-10-01', expected_close_date: '2026-03-31', status: 'cancelled', winner_lead_id: null, created_by: 1, created_at: '2025-10-01T08:00:00Z', updated_at: '2025-12-15T08:00:00Z' },
+        {
+            id: 1, code: 'DA-2026-001', name: 'Chung cư cao cấp Sunrise Tower',
+            description: 'Dự án chung cư 30 tầng tại Quận 2',
+            estimated_value: 850000000,
+            product_info: {
+                notes: 'Cần 200 bộ cửa nhôm cao cấp, 150 bộ cửa kính cường lực. Liên hệ nhãn hàng Eurowindow.',
+                quantity: 350,
+                unit: 'bộ',
+                quoted_amount: 450000000
+            },
+            start_date: '2026-01-05', expected_close_date: '2026-02-28',
+            status: 'active', winner_lead_id: null, created_by: 1,
+            created_at: '2026-01-05T08:00:00Z', updated_at: '2026-01-05T08:00:00Z'
+        },
+        {
+            id: 2, code: 'DA-2026-002', name: 'Biệt thự Phú Mỹ Hưng',
+            description: 'Khu biệt thự liền kề 15 căn',
+            estimated_value: 1200000000,
+            product_info: {
+                notes: 'Nội thất cao cấp, ưu tiên gỗ tự nhiên. Đã liên hệ nhà cung cấp ABC.',
+                quantity: 180,
+                unit: 'bộ',
+                quoted_amount: 680000000
+            },
+            start_date: '2026-01-08', expected_close_date: '2026-03-15',
+            status: 'active', winner_lead_id: null, created_by: 1,
+            created_at: '2026-01-08T09:00:00Z', updated_at: '2026-01-08T09:00:00Z'
+        },
+        {
+            id: 3, code: 'DA-2025-015', name: 'Trung tâm thương mại Galaxy',
+            description: 'TTTM 5 tầng với diện tích 20,000m2',
+            estimated_value: 2500000000,
+            product_info: {
+                notes: 'Dự án đã hoàn thành. Thầu 3 thắng cuộc.',
+                quantity: 520,
+                unit: 'bộ',
+                quoted_amount: 1850000000
+            },
+            start_date: '2025-08-01', expected_close_date: '2025-12-31',
+            status: 'won', winner_lead_id: 9, created_by: 1,
+            created_at: '2025-08-01T08:00:00Z', updated_at: '2025-12-20T10:00:00Z'
+        },
+        {
+            id: 4, code: 'DA-2026-003', name: 'Văn phòng TechPark Office',
+            description: 'Tòa nhà văn phòng hạng A 25 tầng',
+            estimated_value: 1800000000,
+            product_info: {
+                notes: 'Cần hệ thống vách kính văn phòng, trần thả. Đang chờ báo giá.',
+                quantity: 280,
+                unit: 'bộ',
+                quoted_amount: 920000000
+            },
+            start_date: '2026-01-10', expected_close_date: '2026-04-30',
+            status: 'active', winner_lead_id: null, created_by: 1,
+            created_at: '2026-01-10T08:00:00Z', updated_at: '2026-01-10T08:00:00Z'
+        },
+        {
+            id: 5, code: 'DA-2026-004', name: 'Resort Cam Ranh Bay',
+            description: 'Khu nghỉ dưỡng 5 sao 100 phòng',
+            estimated_value: 3500000000,
+            product_info: {
+                notes: 'Thiết kế phong cách nhiệt đới. Cần nội thất gỗ và mây tre.',
+                quantity: 450,
+                unit: 'bộ',
+                quoted_amount: 2100000000
+            },
+            start_date: '2026-01-12', expected_close_date: '2026-06-30',
+            status: 'active', winner_lead_id: null, created_by: 1,
+            created_at: '2026-01-12T08:00:00Z', updated_at: '2026-01-12T08:00:00Z'
+        },
+        {
+            id: 6, code: 'DA-2025-020', name: 'Bệnh viện Đa khoa Quốc tế',
+            description: 'Bệnh viện 500 giường',
+            estimated_value: 5000000000,
+            product_info: {
+                notes: 'Dự án bị hủy do thay đổi quy hoạch.',
+                quantity: 0,
+                unit: '',
+                quoted_amount: 0
+            },
+            start_date: '2025-10-01', expected_close_date: '2026-03-31',
+            status: 'cancelled', winner_lead_id: null, created_by: 1,
+            created_at: '2025-10-01T08:00:00Z', updated_at: '2025-12-15T08:00:00Z'
+        },
+        // Thêm dữ liệu lịch sử để có đủ 3+ tháng cho biểu đồ combo
+        {
+            id: 7, code: 'DA-2025-010', name: 'Căn hộ The Sun Avenue',
+            description: 'Khu căn hộ 3 block, 500 căn',
+            estimated_value: 1500000000,
+            product_info: {
+                notes: 'Đã hoàn thành tháng 10/2025',
+                quantity: 380,
+                unit: 'bộ',
+                quoted_amount: 780000000
+            },
+            start_date: '2025-07-01', expected_close_date: '2025-10-15',
+            status: 'won', winner_lead_id: null, created_by: 1,
+            created_at: '2025-07-01T08:00:00Z', updated_at: '2025-10-15T10:00:00Z'
+        },
+        {
+            id: 8, code: 'DA-2025-012', name: 'Trường học Quốc tế ISB',
+            description: 'Trường quốc tế từ mẫu giáo đến lớp 12',
+            estimated_value: 950000000,
+            product_info: {
+                notes: 'Hoàn thành tháng 11/2025',
+                quantity: 220,
+                unit: 'bộ',
+                quoted_amount: 520000000
+            },
+            start_date: '2025-08-15', expected_close_date: '2025-11-30',
+            status: 'won', winner_lead_id: null, created_by: 1,
+            created_at: '2025-08-15T08:00:00Z', updated_at: '2025-11-28T10:00:00Z'
+        },
     ],
 
     // Leads
@@ -56,6 +163,36 @@ const SEED_DATA = {
         { id: 13, project_id: 5, subcontractor_id: 1, sales_id: 5, assigned_consultant_id: 4, current_stage: 'initial_contact', relationship_score: 3, priority: 'low', notes: 'Mới bắt đầu', meeting_info: 'Gặp Chị Nguyễn R (Nhân viên Hành chính) lần 1', status: 'active', won_at: null, lost_at: null, lost_reason: null, created_at: '2026-01-13T08:00:00Z', updated_at: '2026-01-13T08:00:00Z' },
         { id: 14, project_id: 5, subcontractor_id: 2, sales_id: 6, assigned_consultant_id: 2, current_stage: 'info_gathering', relationship_score: 5, priority: 'medium', notes: 'Đang tìm hiểu yêu cầu', meeting_info: 'Gặp Anh Lê S (QL Kỹ thuật) lần 1', status: 'active', won_at: null, lost_at: null, lost_reason: null, created_at: '2026-01-13T09:00:00Z', updated_at: '2026-01-14T10:00:00Z' },
         { id: 15, project_id: 5, subcontractor_id: 4, sales_id: 8, assigned_consultant_id: 3, current_stage: 'initial_contact', relationship_score: 2, priority: 'low', notes: '', meeting_info: '', status: 'active', won_at: null, lost_at: null, lost_reason: null, created_at: '2026-01-13T10:00:00Z', updated_at: '2026-01-13T10:00:00Z' },
+
+        // Dự án 7 - The Sun Avenue (Lịch sử - Tháng 7-10/2025)
+        { id: 16, project_id: 7, subcontractor_id: 1, sales_id: 5, assigned_consultant_id: 2, current_stage: 'contract_signing', relationship_score: 9, priority: 'high', notes: 'Đã thắng dự án', meeting_info: 'Gặp GĐ lần 4', status: 'won', won_at: '2025-10-15T10:00:00Z', lost_at: null, lost_reason: null, created_at: '2025-07-05T08:00:00Z', updated_at: '2025-10-15T10:00:00Z' },
+        { id: 17, project_id: 7, subcontractor_id: 2, sales_id: 6, assigned_consultant_id: 3, current_stage: 'proposal_sent', relationship_score: 5, priority: 'medium', notes: '', meeting_info: '', status: 'lost', won_at: null, lost_at: '2025-10-15T10:00:00Z', lost_reason: 'Dự án đã có nhà thầu khác thắng', created_at: '2025-07-10T08:00:00Z', updated_at: '2025-10-15T10:00:00Z' },
+
+        // Dự án 8 - Trường ISB (Lịch sử - Tháng 8-11/2025)
+        { id: 18, project_id: 8, subcontractor_id: 3, sales_id: 7, assigned_consultant_id: 4, current_stage: 'contract_signing', relationship_score: 10, priority: 'critical', notes: 'Đã ký hợp đồng', meeting_info: 'Gặp GĐ lần 5', status: 'won', won_at: '2025-11-28T10:00:00Z', lost_at: null, lost_reason: null, created_at: '2025-08-20T08:00:00Z', updated_at: '2025-11-28T10:00:00Z' },
+        { id: 19, project_id: 8, subcontractor_id: 4, sales_id: 8, assigned_consultant_id: 2, current_stage: 'negotiation', relationship_score: 6, priority: 'high', notes: '', meeting_info: '', status: 'lost', won_at: null, lost_at: '2025-11-28T10:00:00Z', lost_reason: 'Dự án đã có nhà thầu khác thắng', created_at: '2025-08-25T08:00:00Z', updated_at: '2025-11-28T10:00:00Z' },
+
+        // === THÊM DỮ LIỆU LỊCH SỬ CHO TREND CHART ===
+
+        // Tháng 9/2025 - 3 leads mới
+        { id: 20, project_id: 7, subcontractor_id: 3, sales_id: 7, assigned_consultant_id: 2, current_stage: 'negotiation', relationship_score: 7, priority: 'high', notes: 'Dự án cũ từ tháng 9', meeting_info: '', status: 'lost', won_at: null, lost_at: '2025-10-15T10:00:00Z', lost_reason: 'Khách chọn đơn vị khác', created_at: '2025-09-05T08:00:00Z', updated_at: '2025-10-15T10:00:00Z' },
+        { id: 21, project_id: 7, subcontractor_id: 4, sales_id: 8, assigned_consultant_id: 3, current_stage: 'proposal_sent', relationship_score: 4, priority: 'medium', notes: '', meeting_info: '', status: 'lost', won_at: null, lost_at: '2025-10-15T10:00:00Z', lost_reason: 'Dự án đã chốt', created_at: '2025-09-12T08:00:00Z', updated_at: '2025-10-15T10:00:00Z' },
+
+        // Tháng 10/2025 - 4 leads mới
+        { id: 22, project_id: 8, subcontractor_id: 1, sales_id: 5, assigned_consultant_id: 2, current_stage: 'proposal_sent', relationship_score: 6, priority: 'high', notes: 'Dự án trong tháng 10', meeting_info: 'Gặp GĐ lần 2', status: 'lost', won_at: null, lost_at: '2025-11-28T10:00:00Z', lost_reason: 'Giá không cạnh tranh', created_at: '2025-10-03T08:00:00Z', updated_at: '2025-11-28T10:00:00Z' },
+        { id: 23, project_id: 8, subcontractor_id: 2, sales_id: 6, assigned_consultant_id: 4, current_stage: 'negotiation', relationship_score: 7, priority: 'high', notes: '', meeting_info: '', status: 'lost', won_at: null, lost_at: '2025-11-28T10:00:00Z', lost_reason: 'Dự án đã chốt', created_at: '2025-10-15T08:00:00Z', updated_at: '2025-11-28T10:00:00Z' },
+        { id: 24, project_id: 3, subcontractor_id: 2, sales_id: 6, assigned_consultant_id: 3, current_stage: 'info_gathering', relationship_score: 5, priority: 'medium', notes: 'Tham gia từ tháng 10', meeting_info: '', status: 'lost', won_at: null, lost_at: '2025-12-20T10:00:00Z', lost_reason: 'Không đủ điều kiện kỹ thuật', created_at: '2025-10-20T08:00:00Z', updated_at: '2025-12-20T10:00:00Z' },
+
+        // Tháng 11/2025 - 3 leads mới
+        { id: 25, project_id: 6, subcontractor_id: 1, sales_id: 5, assigned_consultant_id: 2, current_stage: 'proposal_sent', relationship_score: 6, priority: 'high', notes: 'Dự án tháng 11', meeting_info: '', status: 'active', won_at: null, lost_at: null, lost_reason: null, created_at: '2025-11-05T08:00:00Z', updated_at: '2025-11-20T10:00:00Z' },
+        { id: 26, project_id: 6, subcontractor_id: 3, sales_id: 7, assigned_consultant_id: 4, current_stage: 'negotiation', relationship_score: 8, priority: 'critical', notes: 'Khách hàng ưu tiên cao', meeting_info: 'Gặp GĐ lần 3', status: 'active', won_at: null, lost_at: null, lost_reason: null, created_at: '2025-11-10T08:00:00Z', updated_at: '2025-11-25T10:00:00Z' },
+        { id: 27, project_id: 6, subcontractor_id: 4, sales_id: 8, assigned_consultant_id: 3, current_stage: 'info_gathering', relationship_score: 4, priority: 'low', notes: '', meeting_info: '', status: 'active', won_at: null, lost_at: null, lost_reason: null, created_at: '2025-11-18T08:00:00Z', updated_at: '2025-11-22T10:00:00Z' },
+
+        // Tháng 12/2025 - 4 leads mới
+        { id: 28, project_id: 3, subcontractor_id: 5, sales_id: 5, assigned_consultant_id: 2, current_stage: 'initial_contact', relationship_score: 3, priority: 'low', notes: 'Tham gia muộn', meeting_info: '', status: 'lost', won_at: null, lost_at: '2025-12-20T10:00:00Z', lost_reason: 'Dự án đã có winner', created_at: '2025-12-01T08:00:00Z', updated_at: '2025-12-20T10:00:00Z' },
+        { id: 29, project_id: 6, subcontractor_id: 2, sales_id: 6, assigned_consultant_id: 2, current_stage: 'director_meeting', relationship_score: 9, priority: 'critical', notes: 'Đã gặp GĐ, tiềm năng cao', meeting_info: 'Gặp GĐ Nguyễn Văn X lần 2', status: 'active', won_at: null, lost_at: null, lost_reason: null, created_at: '2025-12-05T08:00:00Z', updated_at: '2025-12-18T10:00:00Z' },
+        { id: 30, project_id: 4, subcontractor_id: 1, sales_id: 5, assigned_consultant_id: 4, current_stage: 'info_gathering', relationship_score: 5, priority: 'medium', notes: 'Dự án cuối năm', meeting_info: '', status: 'active', won_at: null, lost_at: null, lost_reason: null, created_at: '2025-12-10T08:00:00Z', updated_at: '2025-12-15T10:00:00Z' },
+        { id: 31, project_id: 5, subcontractor_id: 3, sales_id: 7, assigned_consultant_id: 3, current_stage: 'proposal_sent', relationship_score: 7, priority: 'high', notes: 'Gửi báo giá cuối năm', meeting_info: 'Gặp QL Dự án lần 2', status: 'active', won_at: null, lost_at: null, lost_reason: null, created_at: '2025-12-15T08:00:00Z', updated_at: '2025-12-20T10:00:00Z' },
     ],
 
     // Lịch sử thay đổi stage
@@ -89,8 +226,8 @@ const SEED_DATA = {
     ],
 };
 
-// Database version - increment this to force reset
-const DB_VERSION = '2.1'; // Updated: Added specific contact names in meeting_info
+// Database version - tăng để reset data
+const DB_VERSION = '3.1'; // v3.1: Thêm historical data cho trend chart with quantity, unit, quoted_amount
 
 // Initialize database with seed data
 function initializeDatabase() {

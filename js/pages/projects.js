@@ -294,6 +294,21 @@ const ProjectsPage = {
                             <input type="date" name="expected_close_date" class="form-input">
                         </div>
                         
+                        <div class="form-group">
+                            <label class="form-label">Số lượng sản phẩm</label>
+                            <input type="number" name="product_quantity" class="form-input" placeholder="VD: 350">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Đơn vị</label>
+                            <input type="text" name="product_unit" class="form-input" placeholder="VD: bộ, cái, m2...">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Số tiền báo giá (VNĐ)</label>
+                            <input type="number" name="quoted_amount" class="form-input" placeholder="VD: 450000000">
+                        </div>
+                        
                         <div class="form-group md:col-span-2">
                             <label class="form-label">Ghi chú sản phẩm</label>
                             <textarea name="product_notes" class="form-input form-textarea" placeholder="Ghi chú các sản phẩm cần liên hệ nhãn hàng..."></textarea>
@@ -317,7 +332,12 @@ const ProjectsPage = {
                     estimated_value: parseInt(formData.get('estimated_value')) || 0,
                     start_date: formData.get('start_date'),
                     expected_close_date: formData.get('expected_close_date'),
-                    product_notes: formData.get('product_notes'),
+                    product_info: {
+                        notes: formData.get('product_notes') || '',
+                        quantity: parseInt(formData.get('product_quantity')) || 0,
+                        unit: formData.get('product_unit') || '',
+                        quoted_amount: parseInt(formData.get('quoted_amount')) || 0
+                    },
                     created_by: Auth.getUser().id
                 });
 

@@ -139,21 +139,31 @@ const ProjectDetailPage = {
                             </div>
                         </div>
 
-                        <!-- Product Notes -->
-                        ${Permissions.canEditProject(user) ? `
-                            <div class="card p-6">
-                                <h3 class="font-semibold text-gray-900 mb-4">📝 Ghi chú sản phẩm</h3>
-                                <textarea id="product-notes" class="form-input form-textarea" placeholder="Ghi chú các sản phẩm cần liên hệ nhãn hàng...">${project.product_notes || ''}</textarea>
-                                <button onclick="ProjectDetailPage.saveNotes()" class="btn btn-sm btn-secondary mt-3 w-full">
-                                    Lưu ghi chú
-                                </button>
-                            </div>
-                        ` : project.product_notes ? `
-                            <div class="card p-6">
-                                <h3 class="font-semibold text-gray-900 mb-4">📝 Ghi chú sản phẩm</h3>
-                                <p class="text-sm text-gray-600 whitespace-pre-wrap">${project.product_notes}</p>
-                            </div>
-                        ` : ''}
+                        <!-- Product Info -->
+                        <div class="card p-6">
+                            <h3 class="font-semibold text-gray-900 mb-4">📦 Thông tin sản phẩm</h3>
+                            ${(() => {
+                const info = project.product_info || { notes: project.product_notes || '', quantity: 0, unit: '', quoted_amount: 0 };
+                return `
+                                    <div class="space-y-3 mb-4">
+                                        <div class="flex justify-between text-sm">
+                                            <span class="text-gray-500">Số lượng</span>
+                                            <span class="font-medium text-gray-900">${info.quantity || 0} ${info.unit || 'SP'}</span>
+                                        </div>
+                                        <div class="flex justify-between text-sm">
+                                            <span class="text-gray-500">Số tiền báo giá</span>
+                                            <span class="font-medium text-green-600">${Utils.formatCurrency(info.quoted_amount || 0)}</span>
+                                        </div>
+                                    </div>
+                                    ${info.notes ? `
+                                        <div class="pt-3 border-t border-gray-200">
+                                            <p class="text-xs text-gray-500 mb-1">Ghi chú:</p>
+                                            <p class="text-sm text-gray-600 whitespace-pre-wrap">${info.notes}</p>
+                                        </div>
+                                    ` : ''}
+                                `;
+            })()}
+                        </div>
                     </div>
                 </div>
             </main>
@@ -398,6 +408,7 @@ const ProjectDetailPage = {
 
     showEditModal() {
         const project = API.getProject(this.projectId);
+        const productInfo = project.product_info || { notes: project.product_notes || '', quantity: 0, unit: '', quoted_amount: 0 };
 
         Modal.open({
             title: 'Sửa thông tin dự án',
@@ -438,6 +449,26 @@ const ProjectDetailPage = {
                             <label class="form-label">Ngày dự kiến chốt</label>
                             <input type="date" name="expected_close_date" class="form-input" value="${project.expected_close_date || ''}">
                         </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Số lượng sản phẩm</label>
+                            <input type="number" name="product_quantity" class="form-input" value="${productInfo.quantity || ''}" placeholder="VD: 350">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Đơn vị</label>
+                            <input type="text" name="product_unit" class="form-input" value="${productInfo.unit || ''}" placeholder="VD: bộ, cái, m2...">
+                        </div>
+                        
+                        <div class="form-group md:col-span-2">
+                            <label class="form-label">Số tiền báo giá (VNĐ)</label>
+                            <input type="number" name="quoted_amount" class="form-input" value="${productInfo.quoted_amount || ''}" placeholder="VD: 450000000">
+                        </div>
+                        
+                        <div class="form-group md:col-span-2">
+                            <label class="form-label">Ghi chú sản phẩm</label>
+                            <textarea name="product_notes" class="form-input form-textarea" placeholder="Ghi chú các sản phẩm cần liên hệ nhãn hàng...">${productInfo.notes || ''}</textarea>
+                        </div>
                     </div>
                 </form>
             `,
@@ -452,7 +483,13 @@ const ProjectDetailPage = {
                     estimated_value: parseInt(formData.get('estimated_value')) || 0,
                     status: formData.get('status'),
                     start_date: formData.get('start_date'),
-                    expected_close_date: formData.get('expected_close_date')
+                    expected_close_date: formData.get('expected_close_date'),
+                    product_info: {
+                        notes: formData.get('product_notes') || '',
+                        quantity: parseInt(formData.get('product_quantity')) || 0,
+                        unit: formData.get('product_unit') || '',
+                        quoted_amount: parseInt(formData.get('quoted_amount')) || 0
+                    }
                 });
 
                 Toast.success('Thành công', 'Đã cập nhật dự án');
@@ -475,10 +512,10 @@ const ProjectDetailPage = {
         });
     },
 
+    // Legacy function - no longer needed as product info is edited via modal
     saveNotes() {
-        const notes = document.getElementById('product-notes').value;
-        API.updateProject(this.projectId, { product_notes: notes });
-        Toast.success('Thành công', 'Đã lưu ghi chú');
+        // This function is kept for backward compatibility but no longer used
+        Toast.info('Thông báo', 'Vui lòng sử dụng nút Sửa để cập nhật thông tin sản phẩm');
     },
 
     showAddLeadModal() {

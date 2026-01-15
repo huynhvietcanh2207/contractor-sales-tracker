@@ -8,7 +8,9 @@ const Router = {
         'subcontractors': 'subcontractors',
         'employees': 'employees',
         'rewards': 'rewards',
-        'notifications': 'notifications'
+        'notifications': 'notifications',
+        'report-sales': 'report-sales',
+        'report-consultant': 'report-consultant'
     },
 
     currentRoute: null,

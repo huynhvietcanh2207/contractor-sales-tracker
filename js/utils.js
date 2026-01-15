@@ -64,6 +64,18 @@ const Utils = {
         return new Intl.NumberFormat('vi-VN').format(num);
     },
 
+    // Format currency in compact form (e.g., "1.2 tỷ", "850 tr")
+    formatCompactCurrency(amount) {
+        if (!amount) return '0 ₫';
+        if (amount >= 1000000000) {
+            return (amount / 1000000000).toFixed(1).replace('.0', '') + ' tỷ';
+        }
+        if (amount >= 1000000) {
+            return (amount / 1000000).toFixed(0) + ' tr';
+        }
+        return this.formatNumber(amount) + ' ₫';
+    },
+
     // Debounce function
     debounce(func, wait) {
         let timeout;

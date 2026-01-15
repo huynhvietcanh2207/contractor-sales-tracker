@@ -50,6 +50,19 @@ const App = {
         if (pageContent) {
             pageContent.innerHTML = this.renderPage();
 
+            // Call afterRender if page has it (for charts that need DOM ready)
+            const route = Router.getRoute();
+            const pageMap = {
+                'dashboard': DashboardPage,
+                'report-sales': ReportSalesPage,
+                'report-consultant': ReportConsultantPage
+            };
+
+            const currentPage = pageMap[route];
+            if (currentPage && typeof currentPage.afterRender === 'function') {
+                setTimeout(() => currentPage.afterRender(), 100);
+            }
+
             // Update sidebar active state
             if (sidebarNav && Auth.isLoggedIn()) {
                 const user = Auth.getUser();
@@ -85,6 +98,10 @@ const App = {
                 return RewardsPage.render();
             case 'notifications':
                 return NotificationsPage.render();
+            case 'report-sales':
+                return ReportSalesPage.render();
+            case 'report-consultant':
+                return ReportConsultantPage.render();
             case '404':
             default:
                 return this.render404();
@@ -98,7 +115,9 @@ const App = {
             'dashboard': ['admin', 'consultant'],
             'subcontractors': ['admin'],
             'employees': ['admin'],
-            'rewards': ['admin', 'consultant']
+            'rewards': ['admin', 'consultant'],
+            'report-sales': ['admin', 'sales'],
+            'report-consultant': ['admin', 'consultant']
         };
 
         if (restrictedRoutes[route]) {

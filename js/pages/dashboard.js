@@ -84,7 +84,7 @@ const DashboardPage = {
                                 <option value="year" ${this.timelineFilter === 'year' ? 'selected' : ''}>Năm</option>
                             </select>
                         </div>
-                        ${this.renderTimelineChart()}
+                        <div id="apex-timeline-chart"></div>
                     </div>
                 </div>
 
@@ -117,6 +117,11 @@ const DashboardPage = {
                 </div>
             </main>
         `;
+    },
+
+    afterRender() {
+        // Render timeline chart after DOM is ready
+        this.renderTimelineChart();
     },
 
     getStats() {
@@ -402,38 +407,94 @@ const DashboardPage = {
 
     renderTimelineChart() {
         const projects = API.getProjects();
-        const now = new Date();
         const data = this.getTimelineData(projects, this.timelineFilter);
 
         if (data.length === 0) {
-            return '<div class="text-center py-8 text-gray-500"><p>Chưa có dữ liệu</p></div>';
+            setTimeout(() => {
+                const chartEl = document.getElementById('apex-timeline-chart');
+                if (chartEl) {
+                    chartEl.innerHTML = '<div class="text-center py-8 text-gray-500"><p>Chưa có dữ liệu</p></div>';
+                }
+            }, 100);
+            return;
         }
 
-        const maxCount = Math.max(...data.map(d => d.count), 1);
+        const labels = data.map(d => d.label);
+        const counts = data.map(d => d.count);
 
-        return `
-            <div class="flex items-end justify-between gap-1 h-48 px-1">
-                ${data.map((item, index) => {
-            const heightPercent = (item.count / maxCount) * 100;
-            const delay = index * 50;
-            return `
-                        <div class="flex-1 flex flex-col items-center animate-fade-in" style="animation-delay: ${delay}ms">
-                            <div class="relative flex items-end justify-center" style="height: 160px; width: 85%;">
-                                <div class="absolute bottom-0 w-full bg-gradient-to-t from-blue-500 to-blue-400 rounded-t-lg transition-all duration-1000 ease-out flex flex-col items-center justify-start pt-2" style="height: ${heightPercent}%; animation-delay: ${delay}ms; min-height: ${item.count > 0 ? '20px' : '0'};">
-                                    ${item.count > 0 ? `<span class="text-xs font-semibold text-white opacity-0 animate-fade-in" style="animation-delay: ${delay + 500}ms">${item.count}</span>` : ''}
-                                </div>
-                            </div>
-                            <div class="text-[10px] text-gray-600 mt-1 text-center font-medium truncate w-full" title="${item.label}">
-                                ${item.label}
-                            </div>
-                        </div>
-                    `;
-        }).join('')}
-            </div>
-            <div class="mt-4 text-center text-xs text-gray-500 animate-fade-in" style="animation-delay: 600ms">
-                Thống kê theo ${this.timelineFilter === 'week' ? 'tuần' : this.timelineFilter === 'month' ? 'tháng' : 'năm'}
-            </div>
-        `;
+        setTimeout(() => {
+            const chartEl = document.getElementById('apex-timeline-chart');
+            if (!chartEl || typeof ApexCharts === 'undefined') return;
+
+            // Clear previous chart
+            chartEl.innerHTML = '';
+
+            const options = {
+                series: [{ name: 'Số dự án', data: counts }],
+                chart: {
+                    type: 'bar',
+                    height: 350,
+                    toolbar: { show: false },
+                    fontFamily: 'Inter, sans-serif',
+                    animations: {
+                        enabled: true,
+                        easing: 'easeinout',
+                        speed: 800
+                    }
+                },
+                plotOptions: {
+                    bar: {
+                        borderRadius: 6,
+                        columnWidth: '60%',
+                        dataLabels: { position: 'top' }
+                    }
+                },
+                dataLabels: {
+                    enabled: true,
+                    formatter: (val) => val > 0 ? val : '',
+                    offsetY: -20,
+                    style: { fontSize: '11px', colors: ['#374151'], fontWeight: 600 }
+                },
+                colors: ['#3B82F6'],
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shade: 'light',
+                        type: 'vertical',
+                        shadeIntensity: 0.5,
+                        gradientToColors: ['#60A5FA'],
+                        inverseColors: false,
+                        opacityFrom: 1,
+                        opacityTo: 0.8,
+                        stops: [0, 100]
+                    }
+                },
+                xaxis: {
+                    categories: labels,
+                    labels: {
+                        style: { colors: '#6b7280', fontSize: '10px' },
+                        rotate: -45,
+                        rotateAlways: this.timelineFilter === 'month'
+                    },
+                    axisBorder: { show: false },
+                    axisTicks: { show: false }
+                },
+                yaxis: {
+                    labels: {
+                        style: { colors: '#6b7280', fontSize: '11px' },
+                        formatter: (val) => Math.round(val)
+                    },
+                    min: 0
+                },
+                grid: { borderColor: '#f3f4f6', strokeDashArray: 4 },
+                tooltip: {
+                    y: { formatter: (val) => val + ' dự án' },
+                    theme: 'light'
+                }
+            };
+
+            new ApexCharts(chartEl, options).render();
+        }, 300);
     },
 
     getTimelineData(projects, filter) {
